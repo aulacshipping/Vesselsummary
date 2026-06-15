@@ -113,7 +113,6 @@
 </div>
 
 <script>
-// LOGIC TẢI DỮ LIỆU VÀ CẢNH BÁO
 const API_URL = 'https://script.google.com/macros/s/AKfycbz7yrXEcPgoVN-R8pUmUMZgBdBi9---tvwujpJfvLNS2cjOjtuLHGfaEXVQa-vGEDgYEw/exec'; 
 const TODAY = new Date(); TODAY.setHours(0,0,0,0);
 const placeholder = `<br><small style="visibility:hidden;">-</small>`;
@@ -122,11 +121,39 @@ function parseDate(str) { if (!str) return null; const s = str.toString(); if (s
 function formatDate(d) { return (d instanceof Date && !isNaN(d)) ? `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}` : "—"; }
 function diffDays(val) { const d = (val instanceof Date) ? val : parseDate(val); return d ? Math.round((d - TODAY) / 86400000) : null; }
 
-function fmtAnnual(val) { const d = parseDate(val); const days = diffDays(d); const txt = formatDate(d); if (days !== null && days <= 90) return `<span class="date-urgent">${txt}<br><small>${days < 0 ? '⚠️ Overdue' : '⏳ Due'} ${Math.abs(days)}d</small></span>`; return `<span class="date-cell">${txt}${placeholder}</span>`; }
-function fmtDrydock(val) { const d = parseDate(val); const days = diffDays(d); const txt = formatDate(d); if (days !== null && days <= 90) return `<span class="date-soon">${txt}<br><small>${days < 0 ? '⚠️ Overdue' : '⏳ Due'} ${Math.abs(days)}d</small></span>`; return `<span class="date-cell">${txt}${placeholder}</span>`; }
-function fmtSireValid(val) { const d = parseDate(val); const days = diffDays(d); const txt = formatDate(d); if (days !== null && days <= 60) return `<span class="date-urgent">${txt}<br><small>${days < 0 ? '⚠️ Overdue' : '⏳ Expires'} ${Math.abs(days)}d</small></span>`; return `<span class="date-cell">${txt}${placeholder}</span>`; }
+// --- LOGIC ĐÃ SỬA: DÙNG "DUE IN" & "EXPIRES IN" ---
+
+function fmtAnnual(val) { 
+    const d = parseDate(val); const days = diffDays(d); const txt = formatDate(d);
+    if (days !== null && days <= 90) return `<span class="date-urgent">${txt}<br><small>${days < 0 ? '⚠️ Overdue' : '⏳ Due in'} ${Math.abs(days)} days</small></span>`; 
+    return `<span class="date-cell">${txt}${placeholder}</span>`; 
+}
+
+function fmtDrydock(val) { 
+    const d = parseDate(val); const days = diffDays(d); const txt = formatDate(d);
+    if (days !== null && days <= 90) return `<span class="date-soon">${txt}<br><small>${days < 0 ? '⚠️ Overdue' : '⏳ Due in'} ${Math.abs(days)} days</small></span>`; 
+    return `<span class="date-cell">${txt}${placeholder}</span>`; 
+}
+
+function fmtSireValid(val) { 
+    const d = parseDate(val); const days = diffDays(d); const txt = formatDate(d);
+    if (days !== null && days <= 60) { 
+        const msg = days < 0 ? `⚠️ Overdue by ${Math.abs(days)} days` : `⏳ Expires in ${days} days`;
+        return `<span class="date-urgent">${txt}<br><small>${msg}</small></span>`; 
+    } 
+    return `<span class="date-cell">${txt}${placeholder}</span>`; 
+}
+
 function fmtDatePlain(val) { return `<span class="date-cell">${formatDate(parseDate(val))}${placeholder}</span>`; }
-function fmtPscRange(win) { if (!win) return `<span class="date-empty">—${placeholder}</span>`; const parts = win.split('-'); const start = parseDate(parts[0].trim()); const end = parseDate(parts[1].trim()); const txt = `${formatDate(start)} - ${formatDate(end)}`; if (start && end && TODAY >= start && TODAY <= end) return `<span class="date-soon">${txt}${placeholder}</span>`; return `<span class="date-cell">${txt}${placeholder}</span>`; }
+
+function fmtPscRange(win) { 
+    if (!win) return `<span class="date-empty">—${placeholder}</span>`; 
+    const parts = win.split('-'); 
+    const start = parseDate(parts[0].trim()); const end = parseDate(parts[1].trim()); 
+    const txt = `${formatDate(start)} - ${formatDate(end)}`;
+    if (start && end && TODAY >= start && TODAY <= end) return `<span class="date-soon">${txt}${placeholder}</span>`; 
+    return `<span class="date-cell">${txt}${placeholder}</span>`; 
+}
 
 async function loadData() {
   try {
@@ -140,7 +167,9 @@ async function loadData() {
     </tr>`).join('');
   } catch(e) { console.error(e); }
 }
-loadData();
+
+loadData(); setInterval(loadData, 60000);
+
 function updateClock() { const n = new Date(); document.getElementById('footer-clock').textContent = `${n.toLocaleDateString('vi-VN')} | ${n.toLocaleTimeString('vi-VN')}`; }
 updateClock(); setInterval(updateClock, 1000);
 </script>
