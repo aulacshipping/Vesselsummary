@@ -55,6 +55,7 @@
     justify-content: space-between;
     flex-shrink: 0;
   }
+  .update-time { font-size: 16px; font-weight: 500; color: #64748b; text-transform: none; }
 
   /* LEGEND */
   .legend {
@@ -174,6 +175,7 @@
   <div id="fleet-view">
     <div class="section-title">
       <span>FLEET SUMMARY</span>
+      <span class="update-time"></span>
     </div>
     
     <div class="legend">
@@ -227,6 +229,11 @@ async function loadData() {
     const res = await fetch(API_URL);
     const data = await res.json();
     
+    // Tự động lấy giờ Last Updated từ Google Sheet gắn vào span.update-time
+    if (data && data.length > 0 && data[0].lastUpdated) {
+      document.querySelector('.update-time').innerText = "Last Updated: " + data[0].lastUpdated;
+    }
+
     document.getElementById('fleet-tbody').innerHTML = data.map(v => `<tr>
       <td>${v.no}</td><td class="vessel-name">${v.name}</td>
       <td>${fmtAnnual(v.annual)}</td><td>${fmtDrydock(v.drydock)}</td>
