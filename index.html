@@ -2,15 +2,34 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=1050">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aulac Corporation - Fleet Summary</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: #ffffff; color: #1e293b; height: 100vh; height: 100dvh; width: 100%; display: flex; flex-direction: column; overflow: hidden; -webkit-font-smoothing: antialiased; }
+  
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #ffffff;
+    color: #1e293b;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent scrolling */
+    -webkit-font-smoothing: antialiased;
+  }
 
   /* HEADER CHUẨN ĐƯỢC ĐỒNG BỘ */
-  #topbar { display: flex; align-items: center; justify-content: space-between; padding: 8px 30px; background: #f8fafc; border-bottom: 3px solid #e2e8f0; flex-shrink: 0; }
-  #mode-label { font-size: 18px; font-weight: 800; padding: 6px 20px; border-radius: 50px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); background: #eff6ff; color: #113285; border: 2px solid #bfdbfe; }
+  #topbar { 
+    display: flex; align-items: center; justify-content: space-between; 
+    padding: 8px 30px; background: #f8fafc; border-bottom: 3px solid #e2e8f0; 
+    flex-shrink: 0; 
+  }
+  #mode-label { 
+    font-size: 18px; font-weight: 800; padding: 6px 20px; border-radius: 50px; 
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); 
+    background: #eff6ff; color: #113285; border: 2px solid #bfdbfe; 
+  }
   .logo { display: flex; align-items: center; }
   .logo svg { width: 130px; height: auto; }
 
@@ -18,19 +37,35 @@
   #main { flex: 1; display: flex; position: relative; overflow: hidden; padding: 10px 30px; }
   #fleet-view { flex: 1; display: flex; flex-direction: column; width: 100%; overflow: hidden; }
 
-  .section-title { font-size: 22px; font-weight: 700; color: #334155; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+  .section-title { 
+    font-size: 22px; font-weight: 700; color: #334155; text-transform: uppercase; 
+    letter-spacing: 1px; margin-bottom: 8px; display: flex; align-items: center; 
+    justify-content: space-between; flex-shrink: 0; 
+  }
   .update-time { font-size: 14px; font-weight: 500; color: #64748b; text-transform: none; }
 
   /* CHÚ THÍCH (LEGEND) HÌNH THỨC GỌN GÀNG */
-  .legend { display: flex; gap: 30px; margin-bottom: 10px; flex-wrap: wrap; font-size: 15px; font-weight: 600; color: #475569; flex-shrink: 0; }
+  .legend { 
+    display: flex; gap: 30px; margin-bottom: 10px; flex-wrap: wrap; 
+    font-size: 15px; font-weight: 600; color: #475569; flex-shrink: 0; 
+  }
   .legend-item { display: flex; align-items: center; gap: 8px; }
   .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
 
-  table { width: 100%; border-collapse: collapse; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); border-radius: 8px; overflow: hidden; flex: 1; height: 100%; display: table; }
+  table { 
+    width: 100%; border-collapse: collapse; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); 
+    border-radius: 8px; overflow: hidden; flex: 1; height: 100%; display: table; 
+  }
   thead tr { background: linear-gradient(135deg, #f1f5f9, #e2e8f0); }
-  thead th { padding: 10px; text-align: center; vertical-align: middle; font-weight: 700; font-size: 16px; color: #0f172a; border-bottom: 4px solid #f59e0b; line-height: 1.3; }
+  thead th { 
+    padding: 10px; text-align: center; vertical-align: middle; font-weight: 700; 
+    font-size: 16px; color: #0f172a; border-bottom: 4px solid #f59e0b; line-height: 1.3; 
+  }
   tbody tr { height: 12.5%; } 
-  tbody td { padding: 6px 10px; text-align: center; border-bottom: 1px solid #e2e8f0; font-size: 20px; font-weight: 600; color: #334155; vertical-align: middle; }
+  tbody td { 
+    padding: 6px 10px; text-align: center; border-bottom: 1px solid #e2e8f0; 
+    font-size: 20px; font-weight: 600; color: #334155; vertical-align: middle; 
+  }
   tbody td.vessel-name { text-align: center; font-weight: 800; color: #0f172a; font-size: 20px; }
 
   .date-urgent { color: #b91c1c; font-weight: 800; font-size: 20px; }
@@ -39,8 +74,15 @@
   .date-empty { color: #94a3b8; font-size: 20px; font-weight: 400; }
   small { display: block; font-size: 13px; margin-top: 2px; font-weight: 700; opacity: 0.9; }
 
-  #footer { display: flex; justify-content: space-between; align-items: center; padding: 10px 30px; font-size: 16px; font-weight: 600; color: #64748b; background: #f8fafc; border-top: 1px solid #e2e8f0; flex-shrink: 0; }
-  #footer-clock { color: #0f172a; font-weight: 700; background: #e2e8f0; padding: 5px 15px; border-radius: 6px; letter-spacing: 1px; }
+  #footer { 
+    display: flex; justify-content: space-between; align-items: center; padding: 10px 30px; 
+    font-size: 16px; font-weight: 600; color: #64748b; background: #f8fafc; 
+    border-top: 1px solid #e2e8f0; flex-shrink: 0; 
+  }
+  #footer-clock { 
+    color: #0f172a; font-weight: 700; background: #e2e8f0; padding: 5px 15px; 
+    border-radius: 6px; letter-spacing: 1px; 
+  }
 </style>
 </head>
 <body>
@@ -48,7 +90,7 @@
 <div id="topbar">
   <div id="mode-label">AULAC CORPORATION - Energy on the move</div>
   <div class="logo">
-    <svg xmlns="http://www.w3.org/2000/svg" width="140" height="51" viewBox="0 0 150 51" fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" width="140" height="51" viewBox="0 0 140 51" fill="none">
         <g clip-path="url(#clip0_2221_911)">
             <mask id="mask0_2221_911" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="109" y="0" width="31" height="12">
                 <path d="M133.761 0.367074C132.65 0.385427 115.958 0.374415 110.774 0.367074C109.929 0.389098 109.249 1.07551 109.249 1.92343V6.94121C109.249 7.77811 109.91 8.45351 110.738 8.49389H125.801C134.614 8.35074 134 11.8305 134 11.8305C134 11.8305 138.063 7.44776 139.202 5.28207C140.324 3.1531 139.901 0.363403 134.062 0.363403C133.963 0.363403 133.86 0.363403 133.757 0.363403" fill="white"></path>
@@ -73,19 +115,19 @@
             <path d="M73.2136 44.246V44.4883L73.3019 44.525C73.4453 44.5874 73.5225 44.6755 73.5556 44.8223C73.5813 44.9031 73.596 45.0059 73.607 45.116C73.607 45.1747 73.607 45.2444 73.607 45.3179C73.607 45.406 73.6107 45.5051 73.6107 45.6115V49.1977C73.6107 49.6088 73.5923 49.8842 73.5482 50.0603C73.5151 50.2035 73.4379 50.2879 73.3056 50.3393L73.21 50.376V50.6623H75.2799V50.387L75.199 50.3467C75.1071 50.3026 75.0336 50.2439 74.9931 50.1815C74.9527 50.1191 74.9233 50.0236 74.9049 49.8915C74.8865 49.7447 74.8792 49.5061 74.8792 49.1977V45.6115C74.8792 45.3546 74.8865 45.1417 74.9049 44.9948C74.9233 44.8627 74.9527 44.7599 74.9968 44.6865C75.0336 44.6241 75.1034 44.5654 75.199 44.5177L75.2799 44.4589V44.2203H73.357L73.21 44.2387L73.2136 44.246Z" fill="#233F84"></path>
             <path d="M84.0706 45.9675C83.861 45.5491 83.6036 45.2114 83.2875 44.9324C82.9639 44.6461 82.5779 44.4259 82.1403 44.2754C81.6808 44.1249 81.2359 44.0551 80.7763 44.0551C80.5263 44.0551 80.291 44.0771 80.0814 44.1249C79.8167 44.1799 79.6071 44.2386 79.4196 44.3084C78.9858 44.4846 78.6181 44.7195 78.3019 45.0168C77.9747 45.3141 77.7173 45.6739 77.5188 46.1107C77.3349 46.5145 77.2393 46.9696 77.2357 47.4651L77.2173 47.5422C77.2173 47.8065 77.2541 48.0781 77.3276 48.3571C77.4085 48.5774 77.5188 48.8453 77.6879 49.1316C78.0004 49.6382 78.4269 50.0383 78.9968 50.3503C79.5556 50.6586 80.1917 50.8091 80.9381 50.8091H80.9417C81.2984 50.7981 81.6072 50.754 81.8793 50.6696C82.1918 50.5705 82.4749 50.4457 82.747 50.2805C83.2801 49.9502 83.6809 49.5317 83.9676 48.9921C84.2471 48.4636 84.3868 47.8946 84.3868 47.3C84.3868 47.0834 84.361 46.8595 84.3059 46.6062C84.2397 46.375 84.1588 46.1621 84.0706 45.9639M83.0338 47.5202C83.0338 47.8029 82.9933 48.0781 82.9088 48.3534C82.8279 48.6177 82.7029 48.86 82.5411 49.0729C82.3793 49.2858 82.1624 49.4583 81.894 49.5941C81.7396 49.6822 81.5888 49.741 81.4491 49.7777C81.3021 49.818 81.1476 49.8364 80.9675 49.8364C80.5189 49.829 80.1366 49.7263 79.7983 49.5207C79.4306 49.2968 79.1512 49.0142 78.938 48.6544C78.8313 48.4856 78.7541 48.3021 78.6843 48.0745C78.6254 47.8799 78.596 47.6854 78.596 47.4762C78.6034 46.9623 78.699 46.5218 78.8681 46.1694C79.0593 45.8023 79.313 45.5307 79.6439 45.3398C79.813 45.2371 80.0005 45.1563 80.177 45.1013C80.3755 45.0462 80.563 45.0205 80.7726 45.0205C81.1881 45.0205 81.5668 45.1233 81.8903 45.3252C82.2212 45.5381 82.4749 45.8023 82.6661 46.1364C82.861 46.4667 82.9749 46.8228 83.0117 47.2192L83.0301 47.5202H83.0338Z" fill="#233F84"></path>
             <path d="M90.1442 44.2277L89.9972 44.246V44.4809L90.0744 44.5213C90.2582 44.6168 90.3722 44.7305 90.4126 44.8664C90.4641 45.0279 90.4898 45.2298 90.4898 45.4647V48.6948L87.3389 44.7232C87.247 44.6021 87.0926 44.4039 87.0779 44.3745V44.2277H85.5558L85.4087 44.246V44.4736L85.4749 44.5176C85.6403 44.6241 85.7433 44.7269 85.8094 44.8517C85.8462 44.9031 85.905 45.0499 85.905 45.45V49.3923C85.905 49.5354 85.8977 49.6492 85.8793 49.7593L85.8572 49.8511C85.8389 49.9245 85.8278 49.9869 85.8131 50.031C85.7543 50.1705 85.655 50.2659 85.4896 50.3503L85.4087 50.3907V50.666H87.3684V50.4054L87.3059 50.3613C87.1772 50.2732 87.0852 50.2035 87.0375 50.1484C86.9897 50.086 86.9492 50.0053 86.9161 49.9098C86.8867 49.7703 86.872 49.5978 86.872 49.3886V46.1034L89.9567 50.02C90.1442 50.2549 90.3281 50.4274 90.5045 50.5852C90.7031 50.7394 90.9494 50.8569 91.2656 50.9486L91.4531 51L91.4347 45.5014C91.4347 45.2665 91.4531 45.0866 91.4862 44.9618C91.5193 44.8407 91.5561 44.7636 91.6002 44.7195C91.6627 44.6571 91.7509 44.5874 91.8649 44.514L91.9311 44.4516V44.224H90.1369L90.1442 44.2277Z" fill="#233F84"></path>
-        </g>
-        <defs>
-            <linearGradient id="paint0_linear_2221_911" x1="124.987" y1="5.98933" x2="134.272" y2="13.7928" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#0F79BF"></stop>
-                <stop offset="0.56" stop-color="#45BEEE"></stop>
-                <stop offset="0.99" stop-color="#0077BE"></stop>
-                <stop offset="1" stop-color="#0077BE"></stop>
-            </linearGradient>
-            <clipPath id="clip0_2221_911">
-                <rect width="150" height="51" fill="white"></rect>
-            </clipPath>
-        </defs>
-    </svg>
+            </g>
+            <defs>
+                <linearGradient id="paint0_linear_2221_911" x1="124.987" y1="5.98933" x2="134.272" y2="13.7928" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#0F79BF"></stop>
+                    <stop offset="0.56" stop-color="#45BEEE"></stop>
+                    <stop offset="0.99" stop-color="#0077BE"></stop>
+                    <stop offset="1" stop-color="#0077BE"></stop>
+                </linearGradient>
+                <clipPath id="clip0_2221_911">
+                    <rect width="140" height="51" fill="white"></rect>
+                </clipPath>
+            </defs>
+        </svg>
   </div>
 </div>
 
