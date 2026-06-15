@@ -5,74 +5,24 @@
 <meta name="viewport" content="width=1050">
 <title>Aulac Corporation - Fleet Summary</title>
 <style>
-  /* FULL SCREEN BORDERLESS (NO-SCROLL) */
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #ffffff; color: #1e293b; height: 100vh; height: 100dvh; width: 100%; display: flex; flex-direction: column; overflow: hidden; -webkit-font-smoothing: antialiased; }
   
-  body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: #ffffff;
-    color: #1e293b;
-    height: 100vh;
-    height: 100dvh;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  /* HEADER */
-  #topbar { 
-    display: flex; align-items: center; justify-content: space-between; 
-    padding: 8px 30px; background: #f8fafc; border-bottom: 3px solid #e2e8f0; 
-    flex-shrink: 0; 
-  }
-  #mode-label { 
-    font-size: 18px; font-weight: 800; padding: 6px 20px; border-radius: 50px; 
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    background: #eff6ff; color: #113285; border: 2px solid #bfdbfe; 
-  }
+  #topbar { display: flex; align-items: center; justify-content: space-between; padding: 8px 30px; background: #f8fafc; border-bottom: 3px solid #e2e8f0; flex-shrink: 0; }
   .logo { display: flex; align-items: center; }
   .logo svg { width: 130px; height: auto; }
 
-  /* MAIN DISPLAY AREA */
-  #main {
-    flex: 1; display: flex; position: relative;
-    overflow: hidden; padding: 10px 30px; 
-  }
-  #fleet-view { 
-    flex: 1; display: flex; flex-direction: column; width: 100%; 
-    overflow: hidden;
-  }
+  #main { flex: 1; display: flex; position: relative; overflow: hidden; padding: 10px 30px; }
+  #fleet-view { flex: 1; display: flex; flex-direction: column; width: 100%; overflow: hidden; }
 
-  /* TABLE TITLE */
-  .section-title {
-    font-size: 22px; font-weight: 700; color: #334155;
-    text-transform: uppercase; letter-spacing: 1px;
-    margin-bottom: 8px; 
-    display: flex; align-items: center;
-    justify-content: space-between;
-    flex-shrink: 0;
-  }
-  /* CHỈNH FONT NHỎ HƠN Ở ĐÂY */
+  .section-title { font-size: 22px; font-weight: 700; color: #334155; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
   .update-time { font-size: 14px; font-weight: 500; color: #64748b; text-transform: none; }
 
-  /* LEGEND */
-  .legend {
-    display: flex; gap: 30px; margin-bottom: 10px; 
-    flex-wrap: wrap; font-size: 16px; font-weight: 600; color: #475569;
-    flex-shrink: 0;
-  }
+  .legend { display: flex; gap: 30px; margin-bottom: 10px; flex-wrap: wrap; font-size: 16px; font-weight: 600; color: #475569; flex-shrink: 0; }
   .legend-item { display: flex; align-items: center; gap: 8px; }
   .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
 
-  /* DATA TABLE */
-  table {
-    width: 100%; border-collapse: collapse;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-    border-radius: 8px; overflow: hidden;
-    flex: 1; height: 100%; display: table;
-  }
+  table { width: 100%; border-collapse: collapse; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); border-radius: 8px; overflow: hidden; flex: 1; height: 100%; display: table; }
   thead tr { background: linear-gradient(135deg, #f1f5f9, #e2e8f0); }
   thead th { padding: 10px; text-align: center; vertical-align: middle; font-weight: 700; font-size: 16px; color: #0f172a; border-bottom: 4px solid #f59e0b; line-height: 1.3; }
   tbody tr:nth-child(even) { background: #f8fafc; }
@@ -81,54 +31,23 @@
   tbody td { padding: 6px 10px; text-align: center; border-bottom: 1px solid #e2e8f0; font-size: 20px; font-weight: 600; color: #334155; vertical-align: middle; }
   tbody td.vessel-name { text-align: center; font-weight: 800; color: #0f172a; font-size: 20px; }
 
-  /* STATUS COLORS */
+  .date-urgent { color: #b91c1c; font-weight: 800; font-size: 20px; }
+  .date-soon { color: #ff7300; font-weight: 800; font-size: 20px; } 
   .date-cell { font-size: 20px; color: #334155; }
   .date-empty { color: #94a3b8; font-size: 20px; font-weight: 400; }
-  .date-soon { color: #ff7300; font-weight: 800; font-size: 20px; } 
-  .date-urgent { color: #b91c1c; font-weight: 800; font-size: 20px; }
-  .date-past { color: #b91c1c; font-weight: 800; font-size: 20px; }
   small { display: block; font-size: 13px; margin-top: 2px; font-weight: 700; opacity: 0.9; }
 
-  /* FOOTER */
-  #footer {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 10px 30px; font-size: 16px; font-weight: 600; color: #64748b;
-    background: #f8fafc; border-top: 1px solid #e2e8f0; flex-shrink: 0;
-  }
+  #footer { display: flex; justify-content: space-between; align-items: center; padding: 10px 30px; font-size: 16px; font-weight: 600; color: #64748b; background: #f8fafc; border-top: 1px solid #e2e8f0; flex-shrink: 0; }
   #footer-clock { color: #0f172a; font-weight: 700; background: #e2e8f0; padding: 5px 15px; border-radius: 6px; letter-spacing: 1px; }
 </style>
 </head>
 <body>
 
 <div id="topbar">
-  <div id="mode-label">AULAC CORPORATION - Energy on the move</div>
   <div class="logo">
     <svg xmlns="http://www.w3.org/2000/svg" width="140" height="51" viewBox="0 0 140 51" fill="none">
-        <g clip-path="url(#clip0_2221_911)">
-            <mask id="mask0_2221_911" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="109" y="0" width="31" height="12">
-                <path d="M133.761 0.367074C132.65 0.385427 115.958 0.374415 110.774 0.367074C109.929 0.389098 109.249 1.07551 109.249 1.92343V6.94121C109.249 7.77811 109.91 8.45351 110.738 8.49389H125.801C134.614 8.35074 134 11.8305 134 11.8305C134 11.8305 138.063 7.44776 139.202 5.28207C140.324 3.1531 139.901 0.363403 134.062 0.363403C133.963 0.363403 133.86 0.363403 133.757 0.363403" fill="white"></path>
-            </mask>
-            <g mask="url(#mask0_2221_911)">
-                <path d="M122.088 -14.9119L103.592 7.09387L127.485 27.1091L145.98 5.10329L122.088 -14.9119Z" fill="url(#paint0_linear_2221_911)"></path>
-            </g>
-            <path d="M125.849 9.24637C125.466 9.25371 125.437 9.26105 125.047 9.26473C123.731 10.9165 122.08 12.7225 120.242 14.9102C119.223 16.1105 118.536 16.5363 118.536 20.3207V27.1371C118.543 27.7831 119.069 28.3007 119.716 28.3007C120.102 28.3007 120.448 28.1135 120.661 27.8235L133.36 12.6527C133.558 11.9186 132.992 9.12891 125.849 9.2427" fill="#233F84"></path>
-            <path d="M7.56268 31.1308L6.73543 33.4653C6.49277 34.1517 6.11775 35.2162 6.11775 35.9394C6.11775 36.9011 6.73543 37.3489 7.35679 37.8628V37.9656H0.30127V37.8628C1.61016 36.6625 2.05504 35.6641 2.67639 33.9132L7.42297 20.207C7.66563 19.5205 8.18036 18.1808 8.18036 17.4576C8.18036 16.529 7.559 15.9123 6.87147 15.4645V15.3617H15.3021L21.8061 33.0542C22.6333 35.2529 22.8025 36.0421 24.7658 37.8628V37.9656H14.3755V37.8628C15.166 37.3489 15.7874 36.868 15.7874 35.7668C15.7874 35.1832 15.7175 35.0107 15.5116 34.4638L14.3755 31.1308H7.56268ZM10.868 21.1687H10.8312L8.55906 27.9337H13.2394L10.8643 21.1687H10.868Z" fill="#233F84"></path>
-            <path d="M38.8401 35.1832C37.4981 37.1396 35.3988 38.4134 32.8545 38.4134C30.9978 38.4134 29.1742 37.8297 27.8322 36.4569C26.3174 34.8749 26.2145 33.1937 26.2145 31.0978V20.2767C26.2145 18.4891 26.4571 16.5326 24.7695 15.4681V15.3654H33.9207V15.4681C32.2332 16.5326 32.4758 18.4927 32.4758 20.2767V29.6552C32.4758 30.995 32.406 32.3017 33.2332 33.4323C33.7516 34.1187 34.6083 34.4968 35.4686 34.4968C38.6011 34.4968 38.8401 30.8225 38.8401 28.521V20.2767C38.8401 18.4891 39.0828 16.5326 37.3952 15.4681V15.3654H46.5832V15.4681C44.8956 16.5326 45.1382 18.4927 45.1382 20.2767V33.0542C45.1382 34.8418 44.8993 36.7983 46.5832 37.8628V37.9655H38.8401V35.1832Z" fill="#233F84"></path>
-            <path d="M58.2345 34.0857C59.3375 34.5996 60.6097 34.6693 61.8487 34.6693C63.7422 34.6693 65.2202 34.2912 66.735 33.157L65.4298 37.9656H50.4253V37.8628C52.1129 36.7983 51.8702 34.8749 51.8702 33.0873V20.273C51.8702 18.4854 52.1092 16.529 50.4253 15.4645V15.3617H59.6831V15.4645C57.9992 16.529 58.2382 18.4891 58.2382 20.3097V34.0857H58.2345Z" fill="#233F84"></path>
-            <path d="M74.5441 31.1308L73.7169 33.4653C73.4779 34.1517 73.0992 35.2162 73.0992 35.9394C73.0992 36.9011 73.7169 37.3489 74.3382 37.8628V37.9656H67.2827V37.8628C68.5916 36.6625 69.0365 35.6641 69.6578 33.9132L74.4081 20.207C74.6508 19.5205 75.1655 18.1808 75.1655 17.4576C75.1655 16.529 74.5478 15.9123 73.8603 15.4645V15.3617H82.2909L88.7949 33.0542C89.6221 35.2529 89.7912 36.0421 91.7546 37.8628V37.9656H81.3643V37.8628C82.1548 37.3489 82.7762 36.868 82.7762 35.7668C82.7762 35.1832 82.7063 35.0107 82.5004 34.4638L81.3643 31.1308H74.5515H74.5441ZM77.8458 21.1687H77.8127L75.5405 27.9337H80.2209L77.8458 21.1687Z" fill="#233F84"></path>
-            <path d="M97.7073 26.5682C97.825 22.0019 100.141 18.3532 105.134 18.3532C106.539 18.3532 107.873 18.6285 109.164 19.0653V15.1891C107.462 14.8698 105.733 14.745 104.002 14.745C100.491 14.745 97.5345 15.3286 94.7807 17.6999C92.4571 19.6563 91.0857 22.3799 90.7842 25.3862H90.7732C90.7401 25.7496 90.7217 26.1093 90.7217 26.469C90.7217 26.5021 90.7217 26.5351 90.7217 26.5682C90.7217 26.6012 90.7217 26.6342 90.7217 26.6673C90.7217 27.027 90.7401 27.3867 90.7732 27.7501H90.7842C91.0857 30.7527 92.4571 33.4763 94.7807 35.4364C97.5345 37.8077 100.491 38.3913 104.002 38.3913C105.792 38.3913 107.583 38.2628 109.344 37.9178L110.995 33.3368C109.153 34.1811 107.219 34.7831 105.134 34.7831C100.141 34.7831 97.825 31.1344 97.7073 26.5682Z" fill="#233F84"></path>
-        </g>
-        <defs>
-            <linearGradient id="paint0_linear_2221_911" x1="124.987" y1="5.98933" x2="134.272" y2="13.7928" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#0F79BF"></stop>
-                <stop offset="0.56" stop-color="#45BEEE"></stop>
-                <stop offset="0.99" stop-color="#0077BE"></stop>
-                <stop offset="1" stop-color="#0077BE"></stop>
-            </linearGradient>
-            <clipPath id="clip0_2221_911">
-                <rect width="140" height="51" fill="white"></rect>
-            </clipPath>
-        </defs>
+        <path d="M125.849 9.24637C125.466 9.25371 125.437 9.26105 125.047 9.26473C123.731 10.9165 122.08 12.7225 120.242 14.9102C119.223 16.1105 118.536 16.5363 118.536 20.3207V27.1371C118.543 27.7831 119.069 28.3007 119.716 28.3007C120.102 28.3007 120.448 28.1135 120.661 27.8235L133.36 12.6527C133.558 11.9186 132.992 9.12891 125.849 9.2427" fill="#233F84"></path>
+        <path d="M7.56268 31.1308L6.73543 33.4653C6.49277 34.1517 6.11775 35.2162 6.11775 35.9394C6.11775 36.9011 6.73543 37.3489 7.35679 37.8628V37.9656H0.30127V37.8628C1.61016 36.6625 2.05504 35.6641 2.67639 33.9132L7.42297 20.207C7.66563 19.5205 8.18036 18.1808 8.18036 17.4576C8.18036 16.529 7.559 15.9123 6.87147 15.4645V15.3617H15.3021L21.8061 33.0542C22.6333 35.2529 22.8025 36.0421 24.7658 37.8628V37.9656H14.3755V37.8628C15.166 37.3489 15.7874 36.868 15.7874 35.7668C15.7874 35.1832 15.7175 35.0107 15.5116 34.4638L14.3755 31.1308H7.56268ZM10.868 21.1687H10.8312L8.55906 27.9337H13.2394L10.8643 21.1687H10.868Z" fill="#233F84"></path>
     </svg>
   </div>
 </div>
@@ -141,22 +60,14 @@
     </div>
     
     <div class="legend">
-      <div class="legend-item"><div class="legend-dot" style="background:#b91c1c"></div>Overdue / Urgent (Annual/Drydock ≤ 90d, SIRE ≤ 60d)</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#ff7300"></div>Upcoming / In Range (Drydock ≤ 90d, PSC in Window)</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#94a3b8"></div>Normal</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#b91c1c"></div>Overdue / Urgent</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#ff7300"></div>Upcoming / In Range</div>
     </div>
     
     <table>
       <thead>
         <tr>
-          <th style="width: 50px">NO.</th>
-          <th>VESSEL NAME</th>
-          <th>ANNUAL SURVEY DATE</th>
-          <th>DRY-DOCK DATE</th>
-          <th>LATEST SIRE</th>
-          <th>SIRE VALID</th>
-          <th>LATEST PSC</th>
-          <th>PSC RANGE</th>
+          <th>NO.</th><th>VESSEL NAME</th><th>ANNUAL SURVEY</th><th>DRY-DOCK</th><th>LATEST SIRE</th><th>SIRE VALID</th><th>LATEST PSC</th><th>PSC RANGE</th>
         </tr>
       </thead>
       <tbody id="fleet-tbody"></tbody>
@@ -170,7 +81,31 @@
 </div>
 
 <script>
-// Giữ nguyên logic JavaScript cũ của bạn
+// Bạn chèn link API của bạn vào đây
+const API_URL = 'https://script.google.com/macros/s/AKfycbz7yrXEcPgoVN-R8pUmUMZgBdBi9---tvwujpJfvLNS2cjOjtuLHGfaEXVQa-vGEDgYEw/exec';
+
+async function loadData() {
+  try {
+    const res = await fetch(API_URL);
+    const data = await res.json();
+    const tbody = document.getElementById('fleet-tbody');
+    tbody.innerHTML = data.map(v => `<tr>
+      <td>${v.no}</td>
+      <td class="vessel-name">${v.name}</td>
+      <td>${v.annual || '—'}</td>
+      <td>${v.drydock || '—'}</td>
+      <td>${v.sire || '—'}</td>
+      <td>${v.sireValid || '—'}</td>
+      <td>${v.psc || '—'}</td>
+      <td>${v.window || '—'}</td>
+    </tr>`).join('');
+  } catch(e) { console.error(e); }
+}
+loadData();
+setInterval(() => {
+    const now = new Date();
+    document.getElementById('footer-clock').textContent = now.toLocaleDateString('vi-VN') + ' | ' + now.toLocaleTimeString('vi-VN');
+}, 1000);
 </script>
 </body>
 </html>
