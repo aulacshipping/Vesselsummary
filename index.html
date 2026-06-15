@@ -228,6 +228,12 @@ async function loadData() {
   try {
     const res = await fetch(API_URL);
     const data = await res.json();
+    
+    // THÊM ĐOẠN NÀY ĐỂ LẤY GIỜ TỪ Ô K1 GẮN LÊN GÓC PHẢI
+    if (data && data.length > 0 && data[0].lastUpdated) {
+      document.querySelector('.update-time').innerText = "Last Updated: " + data[0].lastUpdated;
+    }
+
     document.getElementById('fleet-tbody').innerHTML = data.map(v => `<tr>
       <td>${v.no}</td><td class="vessel-name">${v.name}</td>
       <td>${fmtAnnual(v.annual)}</td><td>${fmtDrydock(v.drydock)}</td>
