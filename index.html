@@ -29,17 +29,17 @@
     flex-shrink: 0; 
   }
   #mode-label { 
-    font-size: 20px; font-weight: 800; padding: 8px 24px; border-radius: 50px; 
+    font-size: 18px; font-weight: 800; padding: 6px 20px; border-radius: 50px; 
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
     background: #eff6ff; color: #113285; border: 2px solid #bfdbfe; 
   }
   .logo { display: flex; align-items: center; }
-  .logo svg { width: 145px; height: auto; }
+  .logo svg { width: 135px; height: auto; }
 
   /* MAIN DISPLAY AREA */
   #main {
     flex: 1; display: flex; position: relative;
-    overflow: hidden; padding: 12px 30px; 
+    overflow: hidden; padding: 10px 30px; 
   }
   #fleet-view { 
     flex: 1; display: flex; flex-direction: column; width: 100%; 
@@ -48,23 +48,22 @@
 
   /* TABLE TITLE */
   .section-title {
-    font-size: 25px; font-weight: 700; color: #334155;
+    font-size: 23px; font-weight: 700; color: #334155;
     text-transform: uppercase; letter-spacing: 1px;
-    margin-bottom: 10px; 
+    margin-bottom: 8px; 
     display: flex; align-items: center;
     justify-content: space-between;
     flex-shrink: 0;
   }
-  .update-time { font-size: 16px; font-weight: 500; color: #64748b; text-transform: none; }
 
   /* LEGEND */
   .legend {
-    display: flex; gap: 30px; margin-bottom: 12px; 
-    flex-wrap: wrap; font-size: 17px; font-weight: 600; color: #475569;
+    display: flex; gap: 30px; margin-bottom: 10px; 
+    flex-wrap: wrap; font-size: 16px; font-weight: 600; color: #475569;
     flex-shrink: 0;
   }
   .legend-item { display: flex; align-items: center; gap: 8px; }
-  .legend-dot { width: 14px; height: 14px; border-radius: 50%; }
+  .legend-dot { width: 13px; height: 13px; border-radius: 50%; }
 
   /* DATA TABLE */
   table {
@@ -80,10 +79,10 @@
   
   /* CĂN GIỮA DÒNG, GIỮA CỘT CHO TITLE BẢNG */
   thead th {
-    padding: 12px 10px; 
+    padding: 10px; 
     text-align: center; 
     vertical-align: middle; 
-    font-weight: 700; font-size: 18px;
+    font-weight: 700; font-size: 16px;
     color: #0f172a; border-bottom: 4px solid #f59e0b; line-height: 1.3;
   }
   
@@ -94,34 +93,34 @@
   /* CONSISTENT HEIGHT & SIZING */
   tbody tr { height: 12.5%; } 
   tbody td {
-    padding: 8px 10px; 
+    padding: 6px 8px; 
     text-align: center; border-bottom: 1px solid #e2e8f0;
-    font-size: 22px; 
+    font-size: 20px; 
     font-weight: 600; color: #334155;
     vertical-align: middle;
   }
   
   /* Căn giữa cột Vessel Name */
-  tbody td.vessel-name { text-align: center; font-weight: 800; color: #0f172a; font-size: 22px; }
+  tbody td.vessel-name { text-align: center; font-weight: 800; color: #0f172a; font-size: 20px; }
   
   /* STATUS COLORS */
-  .date-cell { font-size: 22px; color: #334155; }
-  .date-empty { color: #94a3b8; font-size: 22px; font-weight: 400; }
-  .date-soon { color: #ff7300; font-weight: 800; font-size: 22px; } 
-  .date-urgent { color: #b91c1c; font-weight: 800; font-size: 22px; }
-  .date-past { color: #b91c1c; font-weight: 800; font-size: 22px; }
+  .date-cell { font-size: 20px; color: #334155; }
+  .date-empty { color: #94a3b8; font-size: 20px; font-weight: 400; }
+  .date-soon { color: #ff7300; font-weight: 800; font-size: 20px; } 
+  .date-urgent { color: #b91c1c; font-weight: 800; font-size: 20px; }
+  .date-past { color: #b91c1c; font-weight: 800; font-size: 20px; }
   
-  small { display: block; font-size: 15px; margin-top: 4px; font-weight: 700; opacity: 0.9; }
+  small { display: block; font-size: 14px; margin-top: 3px; font-weight: 700; opacity: 0.9; }
 
   /* FOOTER CHUẨN HÓA GIỐNG POSITION */
   #footer {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 12px 30px; font-size: 18px; font-weight: 600; color: #64748b;
+    padding: 10px 30px; font-size: 16px; font-weight: 600; color: #64748b;
     background: #f8fafc; border-top: 1px solid #e2e8f0; flex-shrink: 0;
   }
   #footer-clock {
     color: #0f172a; font-weight: 700; background: #e2e8f0;
-    padding: 6px 18px; border-radius: 6px; letter-spacing: 1px;
+    padding: 5px 16px; border-radius: 6px; letter-spacing: 1px;
   }
 </style>
 </head>
@@ -175,7 +174,6 @@
   <div id="fleet-view">
     <div class="section-title">
       <span>FLEET SUMMARY</span>
-      <span class="update-time">Last Updated: 15/06/2026</span>
     </div>
     
     <div class="legend">
@@ -229,11 +227,6 @@ async function loadData() {
     const res = await fetch(API_URL);
     const data = await res.json();
     
-    // THÊM ĐOẠN NÀY ĐỂ LẤY GIỜ TỪ Ô K1 GẮN LÊN GÓC PHẢI
-    if (data && data.length > 0 && data[0].lastUpdated) {
-      document.querySelector('.update-time').innerText = "Last Updated: " + data[0].lastUpdated;
-    }
-
     document.getElementById('fleet-tbody').innerHTML = data.map(v => `<tr>
       <td>${v.no}</td><td class="vessel-name">${v.name}</td>
       <td>${fmtAnnual(v.annual)}</td><td>${fmtDrydock(v.drydock)}</td>
