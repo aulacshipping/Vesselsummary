@@ -1,43 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=1050">
-<title>Aulac Corporation - Fleet Summary</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aulac Fleet – Fleet Summary</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Segoe UI', Arial, sans-serif; background: #ffffff; color: #1e293b; height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
+  
+  /* TOPBAR */
   #topbar { display: flex; align-items: center; justify-content: space-between; padding: 8px 30px; background: #f8fafc; border-bottom: 3px solid #e2e8f0; flex-shrink: 0; }
-  #mode-label { font-size: 18px; font-weight: 800; padding: 6px 20px; border-radius: 50px; background: #eff6ff; color: #113285; border: 2px solid #bfdbfe; }
-  .logo { display: flex; align-items: center; }
   .logo svg { width: 130px; height: auto; }
+  #mode-label { font-size: 18px; font-weight: 800; padding: 6px 20px; border-radius: 50px; background: #eff6ff; color: #113285; border: 2px solid #bfdbfe; }
+
+  /* MAIN */
   #main { flex: 1; display: flex; padding: 10px 30px; overflow: hidden; }
   #fleet-view { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
   .section-title { font-size: 22px; font-weight: 700; color: #334155; text-transform: uppercase; display: flex; justify-content: space-between; margin-bottom: 8px; }
   .legend { display: flex; gap: 30px; margin-bottom: 10px; font-size: 16px; font-weight: 600; color: #475569; }
   .legend-item { display: flex; align-items: center; gap: 8px; }
   .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+
+  /* TABLE */
   table { width: 100%; border-collapse: collapse; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); border-radius: 8px; overflow: hidden; flex: 1; }
   thead tr { background: linear-gradient(135deg, #f1f5f9, #e2e8f0); }
-  thead th { padding: 10px; text-align: center; font-weight: 700; border-bottom: 4px solid #f59e0b; }
+  thead th { padding: 10px; text-align: center; font-weight: 700; border-bottom: 4px solid #f59e0b; color: #0f172a; }
   tbody tr { height: 12.5%; }
   tbody td { padding: 6px 10px; text-align: center; border-bottom: 1px solid #e2e8f0; font-size: 20px; font-weight: 600; color: #334155; }
-  .vessel-name { font-weight: 800; color: #0f172a; }
+  .vessel-name { text-align: left; font-weight: 800; color: #0f172a; }
+  
+  /* STATUS */
   .date-urgent { color: #b91c1c; font-weight: 800; }
-  .date-soon { color: #ff7300; font-weight: 800; }
-  .date-cell { color: #334155; }
-  .date-empty { color: #94a3b8; }
+  .date-soon { color: #b45309; font-weight: 800; }
   small { display: block; font-size: 13px; font-weight: 700; }
-  #footer { display: flex; justify-content: space-between; padding: 10px 30px; background: #f8fafc; border-top: 1px solid #e2e8f0; }
-  #footer-clock { font-weight: 700; background: #e2e8f0; padding: 5px 15px; border-radius: 6px; }
+  
+  /* FOOTER */
+  #footer { display: flex; justify-content: space-between; padding: 10px 30px; background: #f8fafc; border-top: 1px solid #e2e8f0; font-weight: 600; color: #64748b; }
+  #footer-clock { color: #0f172a; font-weight: 700; background: #e2e8f0; padding: 5px 15px; border-radius: 6px; }
 </style>
 </head>
 <body>
 
 <div id="topbar">
-    <div id="mode-label">AULAC CORPORATION - Energy on the move</div>
-    <div class="logo">
-        <svg xmlns="http://www.w3.org/2000/svg" width="140" height="51" viewBox="0 0 140 51" fill="none">
+  <div class="logo">
+    <svg xmlns="http://www.w3.org/2000/svg" width="140" height="51" viewBox="0 0 140 51" fill="none">
             <g clip-path="url(#clip0_2221_911)">
                 <mask id="mask0_2221_911" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="109" y="0" width="31" height="12">
                     <path d="M133.761 0.367074C132.65 0.385427 115.958 0.374415 110.774 0.367074C109.929 0.389098 109.249 1.07551 109.249 1.92343V6.94121C109.249 7.77811 109.91 8.45351 110.738 8.49389H125.801C134.614 8.35074 134 11.8305 134 11.8305C134 11.8305 138.063 7.44776 139.202 5.28207C140.324 3.1531 139.901 0.363403 134.062 0.363403C133.963 0.363403 133.86 0.363403 133.757 0.363403" fill="white"></path>
@@ -75,18 +81,19 @@
                 </clipPath>
             </defs>
         </svg>
-    </div>
+  </div>
+  <div id="mode-label">AULAC CORPORATION - Energy on the move</div>
 </div>
 
 <div id="main">
   <div id="fleet-view">
     <div class="section-title">
       <span>FLEET SUMMARY</span>
-      <span class="update-time" id="last-update"></span>
+      <span id="last-update" style="font-size: 16px; color: #64748b;">Loading...</span>
     </div>
     <div class="legend">
       <div class="legend-item"><div class="legend-dot" style="background:#b91c1c"></div>Overdue/Urgent</div>
-      <div class="legend-item"><div class="legend-dot" style="background:#ff7300"></div>Upcoming/In Range</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#b45309"></div>Upcoming</div>
     </div>
     <table>
       <thead>
@@ -103,39 +110,22 @@
 </div>
 
 <script>
-const API_URL = 'https://script.google.com/macros/s/AKfycbz7yrXEcPgoVN-R8pUmUMZgBdBi9---tvwujpJfvLNS2cjOjtuLHGfaEXVQa-vGEDgYEw/exec'; 
+const API_URL = 'https://script.google.com/macros/s/AKfycbz7yrXEcPgoVN-R8pUmUMZgBdBi9---tvwujpJfvLNS2cjOjtuLHGfaEXVQa-vGEDgYEw/exec';
 const TODAY = new Date(); TODAY.setHours(0,0,0,0);
 
 function parseDate(str) { 
   if (!str) return null;
-  var parts = str.toString().split('/');
+  const parts = str.toString().split('/');
   return parts.length === 3 ? new Date(parts[2], parts[1]-1, parts[0]) : new Date(str);
 }
 
-function diffDays(val) { 
-  const d = parseDate(val); 
-  return d ? Math.round((d - TODAY) / 86400000) : null; 
-}
-
-function fmtAnnual(val) {
-  const d = parseDate(val); const days = diffDays(d);
-  if (days !== null && days <= 90) return `<span class="date-urgent">${val}<br><small>${days < 0 ? '⚠️ Overdue' : '⏳ Due'} in ${Math.abs(days)} days</small></span>`;
-  return val ? `<span class="date-cell">${val}</span>` : '<span class="date-empty">—</span>';
-}
-
-function fmtDrydock(val) {
-  const d = parseDate(val); const days = diffDays(d);
-  if (days !== null && days <= 90) return `<span class="date-soon">${val}<br><small>${days < 0 ? '⚠️ Overdue' : '⏳ Due'} in ${Math.abs(days)} days</small></span>`;
-  return val ? `<span class="date-cell">${val}</span>` : '<span class="date-empty">—</span>';
-}
-
-function fmtSireValid(val) {
-  const d = parseDate(val); const days = diffDays(d);
-  if (days !== null && days <= 60) {
-    const msg = days < 0 ? `⚠️ Overdue ${Math.abs(days)}d` : `⏳ Expires in ${days}d`;
-    return `<span class="date-urgent">${val}<br><small>${msg}</small></span>`;
-  }
-  return val ? `<span class="date-cell">${val}</span>` : '<span class="date-empty">—</span>';
+function fmtDate(val, limit, urgentClass) {
+  if (!val) return '—';
+  const d = parseDate(val);
+  const diff = Math.round((d - TODAY) / 86400000);
+  if (diff < 0) return `<span class="${urgentClass}">${val}<br><small>⚠️ Overdue ${Math.abs(diff)}d</small></span>`;
+  if (diff <= limit) return `<span class="${urgentClass}">${val}<br><small>⏳ Due in ${diff}d</small></span>`;
+  return val;
 }
 
 async function loadData() {
@@ -143,25 +133,22 @@ async function loadData() {
     const res = await fetch(API_URL);
     const data = await res.json();
     const tbody = document.getElementById('fleet-tbody');
-    tbody.innerHTML = '';
-    data.forEach(v => {
-      tbody.innerHTML += `<tr>
-        <td>${v.no}</td>
-        <td class="vessel-name">${v.name}</td>
-        <td>${fmtAnnual(v.annual)}</td>
-        <td>${fmtDrydock(v.drydock)}</td>
-        <td><span class="date-cell">${v.sire || '—'}</span></td>
-        <td>${fmtSireValid(v.sireValid)}</td>
-        <td><span class="date-cell">${v.psc || '—'}</span></td>
-        <td><span class="date-cell">${v.window || '—'}</span></td>
-      </tr>`;
-    });
+    tbody.innerHTML = data.map(v => `<tr>
+      <td>${v.no}</td>
+      <td class="vessel-name">${v.name}</td>
+      <td>${fmtDate(v.annual, 90, 'date-urgent')}</td>
+      <td>${fmtDate(v.drydock, 90, 'date-soon')}</td>
+      <td>${v.sire || '—'}</td>
+      <td>${fmtDate(v.sireValid, 60, 'date-urgent')}</td>
+      <td>${v.psc || '—'}</td>
+      <td>${v.window || '—'}</td>
+    </tr>`).join('');
     document.getElementById('last-update').textContent = "Last Updated: " + new Date().toLocaleTimeString('vi-VN');
-  } catch (e) { console.error(e); }
+  } catch(e) { console.error(e); }
 }
 
-loadData(); setInterval(loadData, 60000);
 function updateClock() { document.getElementById('footer-clock').textContent = new Date().toLocaleString('vi-VN'); }
+loadData(); setInterval(loadData, 60000);
 updateClock(); setInterval(updateClock, 1000);
 </script>
 </body>
